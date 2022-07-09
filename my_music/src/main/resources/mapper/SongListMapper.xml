@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.pjj.music.dao.SongListMapper">
+
+    <resultMap id="BaseResultMap" type="org.pjj.music.domain.SongList">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="pic" jdbcType="VARCHAR" property="pic" />
+        <result column="style" jdbcType="VARCHAR" property="style" />
+    </resultMap>
+    
+    <resultMap id="ResultMapWithBloBs" type="org.pjj.music.domain.SongList" extends="BaseResultMap">
+        <result column="introduction" jdbcType="LONGVARCHAR" property="introduction" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,pic,style
+    </sql>
+
+    <sql id="Blob_Column_List">
+        id,title,pic,style,introduction
+    </sql>
+
+    <insert id="insert" parameterType="org.pjj.music.domain.SongList">
+        insert into song_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="title != null and title != ''">
+                title,
+            </if>
+            <if test="pic != null and pic != ''">
+                pic,
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction,
+            </if>
+            <if test="style != null and style != ''">
+                style,
+            </if>
+        </trim>
+        <trim prefix=" values(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="title != null and title != ''">
+                #{title},
+            </if>
+            <if test="pic != null and pic != ''">
+                #{pic},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                #{introduction},
+            </if>
+            <if test="style != null and style != ''">
+                #{style},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="org.pjj.music.domain.SongList">
+        update song_list
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="pic != null and pic != ''">
+                pic = #{pic},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction},
+            </if>
+            <if test="style != null and style != ''">
+                style = #{style},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from song_list where id = #{id}
+    </delete>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBloBs">
+        select
+        <include refid="Blob_Column_List" />
+        from song_list
+        where id = #{id}
+    </select>
+
+    <select id="allSongList" resultMap="ResultMapWithBloBs">
+        select
+        <include refid="Blob_Column_List" />
+        from song_list
+    </select>
+
+    <select id="songListOfTitle" parameterType="java.lang.String" resultMap="ResultMapWithBloBs">
+        select
+        <include refid="Blob_Column_List" />
+        from song_list
+        where title = #{title}
+    </select>
+
+    <select id="likeTitle" parameterType="java.lang.String" resultMap="ResultMapWithBloBs">
+        select
+        <include refid="Blob_Column_List" />
+        from song_list
+        where title like #{title}
+    </select><!-- #{title} 模糊查询在这里没有加 %  由前端传值的时候直接加上 -->
+
+    <select id="songListOfStyle" parameterType="java.lang.String" resultMap="ResultMapWithBloBs">
+        select
+        <include refid="Blob_Column_List" />
+        from song_list
+        where style = #{style}
+    </select>
+
+    <select id="likeStyle" parameterType="java.lang.String" resultMap="ResultMapWithBloBs">
+        select
+        <include refid="Blob_Column_List" />
+        from song_list
+        where style like #{sytle}
+    </select>
+
+</mapper>

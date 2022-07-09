@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.pjj.music.dao.SingerMapper">
+
+    <resultMap id="BaseResultMap" type="org.pjj.music.domain.Singer">
+        <id column="id" jdbcType="INTEGER" property="id" /><!-- column 表示字段, property 表示属性 -->
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sex" jdbcType="TINYINT" property="sex" />
+        <result column="pic" jdbcType="VARCHAR" property="pic" />
+        <result column="birth" jdbcType="TIMESTAMP" property="birth" />
+        <result column="location" jdbcType="VARCHAR" property="location" />
+        <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    </resultMap>
+
+    <parameterMap id="BaseParameterMap" type="org.pjj.music.domain.Singer">
+        <parameter property="id" jdbcType="INTEGER" />
+        <parameter property="name" jdbcType="VARCHAR" />
+        <parameter property="sex" jdbcType="TINYINT" />
+        <parameter property="pic" jdbcType="VARCHAR" />
+        <parameter property="birth" jdbcType="TIMESTAMP" />
+        <parameter property="location" jdbcType="VARCHAR" />
+        <parameter property="introduction" jdbcType="VARCHAR" />
+    </parameterMap>
+
+    <sql id="Base_Column_List">
+        id,name,sex,pic,birth,location,introduction
+    </sql>
+
+    <insert id="insert" parameterType="org.pjj.music.domain.Singer">
+        insert into singer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="sex != null and sex != ''">
+                sex,
+            </if>
+            <if test="pic != null and pic != ''">
+                pic,
+            </if>
+            /* Cause: java.lang.IllegalArgumentException: invalid comparison: java.util.Date and java.lang.String */
+            /* 这是因为原因是mybatis 中对于时间参数进行比较时的一个bug. 如果拿传入的时间类型参数与空字符串''进行对比判断则会引发异常 */
+            <if test="birth != null">
+                birth,
+            </if>
+            <if test="location != null and location != ''">
+                location,
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction,
+            </if>
+        </trim>
+        <trim prefix=" values(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="sex != null and sex != ''">
+                #{sex},
+            </if>
+            <if test="pic != null and pic != ''">
+                #{pic},
+            </if>
+            <if test="birth != null">
+                #{birth},
+            </if>
+            <if test="location != null and location != ''">
+                #{location},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                #{introduction},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="org.pjj.music.domain.Singer">
+        update singer
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="pic != null and pic != ''">
+                pic = #{pic},
+            </if>
+            <if test="birth != null">
+                birth = #{birth},
+            </if>
+            <if test="location != null and location != ''">
+                location = #{location},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from singer where id = #{id}
+    </delete>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from singer
+        where id = #{id}
+    </select>
+
+    <select id="allSinger" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from singer
+    </select>
+
+    <select id="singerOfName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from singer
+        where name like #{name}
+    </select><!-- #{name} 模糊查询在这里没有加 %  由前端传值的时候直接加上 -->
+
+    <select id="singerOfSex" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from singer
+        where sex = #{sex}
+    </select>
+
+</mapper>
