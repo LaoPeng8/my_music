@@ -82,13 +82,18 @@ export default {
               message: '登录成功',
               type: 'success'
             })
-            _this.setUserMsg(res.userMsg[0])
+
+            // console.log('1111' + res)
+            // console.log(res)
+
+            _this.setUserMsg(res.userMsg)
             _this.$store.commit('setLoginIn', true)
             setTimeout(function () {
               _this.changeIndex('首页')
-              _this.$router.push({path: '/'})
-              _this.$router.go(0)
-            }, 2000)
+              _this.$router.push({path: '/my-music'})
+              _this.$router.go(0)//刷新页面(否则头像 与 登录注册 会有问题)
+            }, 1000)
+            _this.$router.push({path: '/'})
           } else {
             _this.notify('用户名或密码错误', 'error')
           }
@@ -99,6 +104,12 @@ export default {
       this.$store.commit('setUserId', item.id)
       this.$store.commit('setUsername', item.username)
       this.$store.commit('setAvator', item.avator)
+
+      window.localStorage.setItem('setUserId',item.id)
+      window.localStorage.setItem('setUsername',item.username)
+      window.localStorage.setItem('setAvator',item.avator)
+
+      window.localStorage.setItem('loginIn',true)
     },
     goSignUp () {
       this.$router.push({path: '/sign-up'})

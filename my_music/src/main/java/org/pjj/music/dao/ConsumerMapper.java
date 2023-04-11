@@ -63,4 +63,13 @@ public interface ConsumerMapper {
      */
     Consumer getByUsername(String username);
 
+    /**
+     * 根据 id 查询用户信息
+     * @param id
+     * @return
+     */
+    Consumer getDetailById(Integer id);
+
+    List<Integer> selectMeLoveSongId(Integer userId);
+
 }

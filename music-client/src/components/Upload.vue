@@ -41,7 +41,8 @@ export default {
     handleAvatarSuccess (res, file) {
       if (res.code === 1) {
         this.imageUrl = URL.createObjectURL(file.raw)
-        this.$store.commit('setAvator', res.avator)
+        this.$store.commit('setAvator', res.pic)
+        window.localStorage.setItem('setAvator',res.pic)
         this.$message({
           message: '修改成功',
           type: 'success'

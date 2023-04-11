@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.pjj.music.dao.RankMapper">
+
+    <select id="selectScoreSum" resultType="java.lang.Integer">
+        SELECT COALESCE(sum(score),0) as score from rank where song_list_id = #{0} ;
+    </select>
+
+    <select id="selectRankNum" resultType="java.lang.Integer">
+        SELECT COALESCE(count(id),0) as num from rank where song_list_id = #{0} ;
+    </select>
+
+    <select id="selectRankScoreOfMe" resultType="java.lang.Integer">
+        select score from rank where song_list_id = #{songListId,jdbcType=BIGINT} and consumer_id = #{consumerId,jdbcType=BIGINT}
+    </select>
+    
+    <insert id="insert" parameterType="org.pjj.music.domain.Rank" >
+        insert into rank (song_list_id, consumer_id,score)
+        values (#{songListId,jdbcType=BIGINT}, #{consumerId,jdbcType=BIGINT},#{score,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.pjj.music.domain.Rank" >
+        insert into rank(song_list_id, consumer_id, score) values(#{songListId,jdbcType=BIGINT}, #{consumerId,jdbcType=BIGINT}, #{score,jdbcType=INTEGER})
+    </insert>
+
+</mapper>

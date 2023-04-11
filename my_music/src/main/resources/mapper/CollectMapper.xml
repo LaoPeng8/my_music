@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.pjj.music.dao.CollectMapper">
+
+    <insert id="addMeLove" parameterType="org.pjj.music.domain.Collect">
+        insert into collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            user_id, `type`,
+            <if test="songId != null and songId != ''">
+                song_id,
+            </if>
+            <if test="songListId != null and songListId != ''">
+                song_list_id,
+            </if>
+            create_time,
+        </trim>
+        <trim prefix=" values(" suffix=")" suffixOverrides=",">
+            #{userId}, #{type},
+            <if test="songId != null and songId != ''">
+                #{songId},
+            </if>
+            <if test="songListId != null and songListId != ''">
+                #{songListId},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <select id="isMeLove" parameterType="org.pjj.music.domain.Collect" resultType="int">
+        select count(*) from collect where user_id = #{userId} and song_id = #{songId}
+    </select>
+
+    <delete id="delMeLove" parameterType="org.pjj.music.domain.Collect">
+        delete from collect where user_id = #{userId} and song_id = #{songId}
+    </delete>
+
+    <select id="detail" parameterType="int" resultType="org.pjj.music.domain.Collect">
+        select * from collect where user_id = #{userId} and type = '0'
+    </select>
+
+</mapper>

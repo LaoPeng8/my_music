@@ -120,8 +120,10 @@ export default {
     getUsers (id, item) {
       HttpManager.getUserOfId(id)
         .then(res => {
+          console.log("1111")
+          console.log(res)
           let o = item
-          o.name = res[0].username
+          o.name = res.username
           this.tableData.push(o)
           this.tempDate.push(o)
         })

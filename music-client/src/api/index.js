@@ -29,7 +29,11 @@ const HttpManager = {
 
   // =======================> 收藏 API
   // 返回的指定用户ID的收藏列表
-  getCollectionOfUser: (userId) => get(`collection/detail?userId=${userId}`),
+  getCollectionOfUser: (userId) => get(`user/meLoveSongId?userId=${userId}`),
+  
+  // 返回指定用户ID是否喜欢当前歌曲
+  getIsMeLove: (userId, songId) => get(`user/isMeLove?userId=${userId}&songId=${songId}`),
+
   // 添加收藏的歌曲 type: 0 代表歌曲， 1 代表歌单
   setCollection: (params) => post(`collection/add`, params),
 
@@ -38,6 +42,8 @@ const HttpManager = {
   setRank: (params) => post(`rank/add`, params),
   // 获取指定歌单的评分
   getRankOfSongListId: (songListId) => get(`rank?songListId=${songListId}`),
+  // 获取自己对指定歌单的评分
+  getRankOfMe:(songListId, consumerId) => get(`rank/me?songListId=${songListId}&consumerId=${consumerId}`),
 
   // =======================> 评论 API
   // 添加评论

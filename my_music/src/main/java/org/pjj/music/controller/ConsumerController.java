@@ -1,6 +1,8 @@
 package org.pjj.music.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import org.pjj.music.dao.CollectMapper;
+import org.pjj.music.domain.Collect;
 import org.pjj.music.domain.Consumer;
 import org.pjj.music.domain.Singer;
 import org.pjj.music.service.ConsumerService;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 用户 Controller
@@ -24,6 +27,9 @@ public class ConsumerController {
 
     @Autowired
     private ConsumerService consumerService;
+
+    @Autowired
+    private CollectMapper collectMapper;
 
     /**
      * 查询全部歌手
@@ -218,6 +224,44 @@ public class ConsumerController {
             }
 
         }
+    }
+
+
+    /**
+     * 根据主键查询 用户信息
+     */
+    @GetMapping("/detail")
+    public Object userDetail(Integer id){
+        return consumerService.selectByPrimaryKey(id);
+    }
+
+
+    /**
+     * 根据主键查询 用户我喜欢歌曲id 集合
+     */
+    @GetMapping("/meLoveSongId")
+    public List<Integer> MeLoveSongId(Integer userId){
+        return consumerService.selectMeLoveSongId(userId);
+    }
+
+    @GetMapping("/isMeLove")
+    public Object isMeLove(Integer userId, Integer songId) {
+        Collect collect = new Collect();
+        collect.setUserId(userId);
+        collect.setSongId(songId);
+
+        int meLove = collectMapper.isMeLove(collect);
+
+        JSONObject jsonObject = new JSONObject();
+        if(meLove >= 1) {
+            jsonObject.put(Const.CODE,1);
+            jsonObject.put(Const.MSG,"love");
+        }else {
+            jsonObject.put(Const.CODE,0);
+            jsonObject.put(Const.MSG,"notLove");
+        }
+
+        return jsonObject;
     }
 
 }

@@ -63,7 +63,8 @@ export default {
       count: 0, // 点赞数
       songListId: '', // 歌单ID
       value3: 0,
-      value5: 0
+      value5: 0,
+      loginIn: false,
     }
   },
   computed: {
@@ -80,6 +81,11 @@ export default {
     this.singers = this.tempList
     this.getSongId() // 获取歌单里面的歌曲ID
     this.getRank(this.songListId) // 获取评分
+
+    this.loginIn = window.localStorage.getItem('loginIn')
+    if(this.loginIn == undefined || this.loginIn === undefined || this.loginIn == '') {
+      this.loginIn = false;
+    }
   },
   methods: {
     // 收集歌单里面的歌曲
@@ -108,6 +114,8 @@ export default {
     },
     // 获取评分
     getRank (id) {
+
+      //获取歌单总评分
       HttpManager.getRankOfSongListId(id)
         .then(res => {
           this.value5 = res / 2
@@ -115,6 +123,16 @@ export default {
         .catch(err => {
           console.log(err)
         })
+
+      //获取自己对歌单的评分
+        HttpManager.getRankOfMe(id, this.userId)
+        .then(res => {
+          this.value3 = res / 2
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
     },
     // 提交评分
     pushValue () {
@@ -128,6 +146,8 @@ export default {
             if (res.code === 1) {
               this.getRank(this.songListId)
               this.notify('评分成功', 'success')
+            } else if(res.code === 2) {
+              this.notify('评分失败：' + res.msg, 'error')
             } else {
               this.notify('评分失败', 'error')
             }

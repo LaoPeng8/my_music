@@ -94,4 +94,16 @@ public class ConsumerServiceImpl implements ConsumerService {
     public Consumer getByUsername(String username) {
         return consumerMapper.getByUsername(username);
     }
+
+    @Override
+    public Consumer userDetail(Integer id) {
+        return consumerMapper.getDetailById(id);
+    }
+
+    @Override
+    public List<Integer> selectMeLoveSongId(Integer userId) {
+        return consumerMapper.selectMeLoveSongId(userId);
+    }
+
+
 }

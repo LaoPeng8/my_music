@@ -61,4 +61,9 @@ public interface ConsumerService {
      */
     Consumer getByUsername(String username);
 
+
+    Consumer userDetail(Integer id);
+
+    List<Integer> selectMeLoveSongId(Integer userId);
+
 }

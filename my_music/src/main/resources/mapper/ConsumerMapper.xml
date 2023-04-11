@@ -7,7 +7,7 @@
         <id column="id" jdbcType="INTEGER" property="id" /><!-- column 表示字段, property 表示属性 -->
         <result column="username" jdbcType="VARCHAR" property="username" />
         <result column="password" jdbcType="VARCHAR" property="password" />
-        <result column="sex" jdbcType="TINYINT" property="sex" />
+        <result column="sex" jdbcType="INTEGER" property="sex" />
         <result column="phone_num" jdbcType="VARCHAR" property="phoneNum" />
         <result column="birth" jdbcType="TIMESTAMP" property="birth" />
         <result column="introduction" jdbcType="VARCHAR" property="introduction" />
@@ -37,7 +37,10 @@
                 sex,
             </if>
             <if test="phoneNum != null and phoneNum != ''">
-                phoneNum,
+                phone_num,
+            </if>
+            <if test="email != null and email != ''">
+                email,
             </if>
             <if test="birth != null">
                 birth,
@@ -68,6 +71,9 @@
             </if>
             <if test="phoneNum != null and phoneNum != ''">
                 #{phoneNum},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
             </if>
             <if test="birth != null">
                 #{birth},
@@ -100,6 +106,9 @@
             <if test="phoneNum != null and phoneNum != ''">
                 phone_num = #{phoneNum},
             </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
             <if test="birth != null">
                 birth = #{birth},
             </if>
@@ -124,6 +133,7 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
+        ,email
         from consumer
         where id = #{id}
     </select>
@@ -131,6 +141,7 @@
     <select id="allConsumer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
+        ,email
         from consumer
     </select>
 
@@ -145,6 +156,17 @@
         <include refid="Base_Column_List" />
         from consumer
         where username = #{username}
+    </select>
+
+    <select id="getDetailById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from consumer
+        where id = #{id}
+    </select>
+
+    <select id="selectMeLoveSongId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select song_id from collect where user_id = #{userId} and type = '0'
     </select>
 
 </mapper>

@@ -44,18 +44,15 @@ const mixin = {
       this.$store.commit('setArtist', this.replaceLName(name))
       this.$store.commit('setLyric', this.parseLyric(lyric))
       if (this.loginIn) {
-        this.$store.commit('setIsActive', false)
-        HttpManager.getCollectionOfUser(this.userId)
+        HttpManager.getIsMeLove(this.userId, id)
           .then(res => {
-            for (let item of res) {
-              if (item.songId === id) {
-                this.$store.commit('setIsActive', true)
-                break
-              }
+            if(res.code == 1) {
+              this.$store.commit('setIsActive', true)
+            }else {
+              this.$store.commit('setIsActive', false)
             }
           })
           .catch(err => {
-            console.log(err)
           })
       }
     },

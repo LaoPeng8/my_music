@@ -4,7 +4,7 @@
     <div class="collapse-btn" @click="collapseChage">
       <i class="el-icon-s-unfold"></i>
     </div>
-    <div class="logo">Yin-music 后台管理</div>
+    <div class="logo">My-Music 后台管理</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 用户头像 -->

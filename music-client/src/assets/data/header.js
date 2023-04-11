@@ -28,7 +28,7 @@ const menuList = [{
   path: '/setting'
 }, {
   name: '退出',
-  path: 0
+  path: '/login-in'
 }]
 
 export {

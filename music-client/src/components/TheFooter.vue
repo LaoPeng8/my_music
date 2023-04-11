@@ -13,7 +13,7 @@ export default {
     return {
       footerList: [
         `关于 | 帮助 | 条款 | 反馈`,
-        `Copyright © 2019 Yin-Hongwei`
+        `Copyright © 2019 45e00ccc662a7cfcd8cee01c4956c47e`
       ]
     }
   }

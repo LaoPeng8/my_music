@@ -46,13 +46,20 @@ export default {
   mixins: [mixin],
   data () {
     return {
-      musicName: 'Yin-music',
+      musicName: 'My-Music',
       navMsg: navMsg, // 左侧导航栏
       loginMsg: loginMsg, // 右侧导航栏
       menuList: menuList, // 用户下拉菜单项
       keywords: '',
       ERJI: ICON.ERJI,
-      SOUSUO: ICON.SOUSUO
+      SOUSUO: ICON.SOUSUO,
+      loginIn: false
+    }
+  },
+  created() {
+    this.loginIn = window.localStorage.getItem('loginIn')
+    if(this.loginIn == undefined || this.loginIn === undefined || this.loginIn == '') {
+      this.loginIn = false;
     }
   },
   computed: {
@@ -61,7 +68,7 @@ export default {
       'activeName',
       'avator',
       'username',
-      'loginIn'
+      // 'loginIn'
     ])
   },
   mounted () {
@@ -94,12 +101,26 @@ export default {
       this.$store.commit('setActiveName', value)
     },
     goMenuList (path) {
+      // console.log('111111')
+      // console.log(path)
       if (path === 0) {
         this.$store.commit('setIsActive', false)
       }
       document.querySelector('.menu').classList.remove('show')
       if (path) {
-        this.$router.push({path: path})
+        if(path == '/login-in'){
+          window.localStorage.removeItem('setUserId')
+          window.localStorage.removeItem('setUsername')
+          window.localStorage.removeItem('setAvator')
+
+          window.localStorage.removeItem('loginIn')
+
+          this.$router.push({path: '/login-in'})
+          this.$router.go(0)
+        }else{
+          this.$router.push({path: path})
+        }
+
       } else {
         this.$store.commit('setLoginIn', false)
         this.$router.go(0)

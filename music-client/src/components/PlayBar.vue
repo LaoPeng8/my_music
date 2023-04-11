@@ -63,7 +63,7 @@
       </div>
       <!--添加-->
       <div class="item" @click="collection">
-        <svg :class="{ active: isActive }" class="icon" aria-hidden="true">
+        <svg :class="{ active: isActive }" class="icon" aria-hidden="true" id="meLoveId">
           <use :xlink:href="XIHUAN"></use>
         </svg>
       </div>
@@ -80,6 +80,8 @@
         </svg>
       </div>
     </div>
+
+    <input type="hidden" :value="isActive" />
   </div>
 </template>
 
@@ -109,12 +111,15 @@ export default {
       YINLIANG: ICON.YINLIANG1,
       JINGYIN: ICON.JINGYIN,
       LIEBIAO: ICON.LIEBIAO,
-      XIHUAN: ICON.XIHUAN
+      XIHUAN: ICON.XIHUAN,
+
+
+      loginIn: false, // 用户登录状态
     }
   },
   computed: {
     ...mapGetters([
-      'loginIn', // 用户登录状态
+      //'loginIn', // 用户登录状态
       'userId', // 用户 id
       'isPlay', // 播放状态
       'playButtonUrl', // 播放状态的图标
@@ -155,6 +160,12 @@ export default {
     // 自动播放下一首
     autoNext () {
       this.next()
+    }
+  },
+  created() {
+    this.loginIn = window.localStorage.getItem('loginIn')
+    if(this.loginIn == undefined || this.loginIn === undefined || this.loginIn == '') {
+      this.loginIn = false;
     }
   },
   mounted () {
@@ -325,6 +336,19 @@ export default {
         this.$store.commit('setTitle', this.replaceFName(this.listOfSongs[this.listIndex].name))
         this.$store.commit('setArtist', this.replaceLName(this.listOfSongs[this.listIndex].name))
         this.$store.commit('setLyric', this.parseLyric(this.listOfSongs[this.listIndex].lyric))
+
+        if (this.loginIn) {
+          HttpManager.getIsMeLove(this.userId, this.listOfSongs[this.listIndex].id)
+            .then(res => {
+              if(res.code == 1) {
+                this.$store.commit('setIsActive', true)
+              }else {
+                this.$store.commit('setIsActive', false)
+              }
+            })
+            .catch(err => {
+            })
+        }
       }
     },
     goPlayerPage () {
@@ -342,7 +366,8 @@ export default {
               this.$store.commit('setIsActive', true)
               this.notify('收藏成功', 'success')
             } else if (res.code === 2) {
-              this.notify('已收藏', 'warning')
+              this.notify('取消收藏', 'warning')
+              this.$store.commit('setIsActive', false)
             } else {
               this.$notify.error({
                 title: '收藏失败',

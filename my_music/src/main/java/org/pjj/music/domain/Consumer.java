@@ -18,7 +18,7 @@ public class Consumer {
     /* 密码 */
     private String password;
     /* 性别 */
-    private Byte sex;
+    private Integer sex;
     /* 手机号 */
     private String phoneNum;
     /* 电子邮箱 */
@@ -66,11 +66,11 @@ public class Consumer {
         this.password = password;
     }
 
-    public Byte getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Byte sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 

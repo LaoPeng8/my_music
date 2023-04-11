@@ -81,22 +81,22 @@ export default {
       params.append('username', this.registerForm.username)
       params.append('password', this.registerForm.password)
       params.append('sex', this.registerForm.sex)
-      params.append('phone_num', this.registerForm.phoneNum)
+      params.append('phoneNum', this.registerForm.phoneNum)
       params.append('email', this.registerForm.email)
       params.append('birth', datetime)
       params.append('introduction', this.registerForm.introduction)
       params.append('location', this.registerForm.location)
-      params.append('avator', '/img/user.jpg')
+      params.append('avator', '/img/avatorImages/user.jpg')
       HttpManager.SignUp(params)
         .then(res => {
           console.log(res)
           if (res.code === 1) {
             _this.notify('注册成功', 'success')
             setTimeout(function () {
-              _this.$router.push({path: '/'})
+              _this.$router.push({path: '/login-in'})
             }, 2000)
           } else {
-            _this.notify('注册失败', 'error')
+            _this.notify('注册失败：'+res.msg, 'error')
           }
         })
         .catch(err => {

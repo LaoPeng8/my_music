@@ -1,6 +1,6 @@
 <template>
   <div class="login-wrap">
-    <div class="ms-title">Yin-music 后台管理</div>
+    <div class="ms-title">My-Music 后台管理</div>
     <div class="ms-login">
       <el-form
         ref="ruleForm"
@@ -37,8 +37,8 @@ export default {
   data: function () {
     return {
       ruleForm: {
-        username: 'admin',
-        password: '123'
+        username: '',
+        password: ''
       },
       rules: {
         username: [

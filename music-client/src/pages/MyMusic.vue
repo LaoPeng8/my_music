@@ -61,12 +61,12 @@ export default {
     getMsg (id) {
       HttpManager.getUserOfId(id)
         .then(res => {
-          this.username = res[0].username
-          this.getuserSex(res[0].sex)
-          this.birth = this.attachBirth(res[0].birth)
-          this.introduction = res[0].introduction
-          this.location = res[0].location
-          this.avator = res[0].avator
+          this.username = res.username
+          this.getuserSex(res.sex)
+          this.birth = this.attachBirth(res.birth)
+          this.introduction = res.introduction
+          this.location = res.location
+          this.avator = res.avator
         })
         .catch(err => {
           console.log(err)
@@ -86,7 +86,7 @@ export default {
           this.collection = res
           // 通过歌曲ID获取歌曲信息
           for (let item of this.collection) {
-            this.getCollectSongs(item.songId)
+            this.getCollectSongs(item)
           }
           this.$store.commit('setListOfSongs', this.collectList)
         })
