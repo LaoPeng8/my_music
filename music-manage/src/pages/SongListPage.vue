@@ -2,9 +2,10 @@
   <div class="table">
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" size="mini" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <el-button type="primary" size="mini" class="handle-del mr10" @click="batchDelVisible = true">批量删除</el-button>
         <el-input v-model="select_word" size="mini" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" size="mini" @click="centerDialogVisible = true">添加歌单</el-button>
+        <el-button type="primary" size="mini" @click="getSongListStylePage()">歌单分类管理</el-button>
       </div>
       <el-table :data="data" border size="mini" style="width: 100%" height="550px" ref="multipleTable" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="40"></el-table-column>
@@ -30,7 +31,7 @@
         </el-table-column>
         <el-table-column label="风格" width="100" align="center">
           <template slot-scope="scope">
-            <div>{{ scope.row.style }}</div>
+            <div>{{ scope.row.name }}</div>
           </template>
         </el-table-column>
         <el-table-column label="内容" width="80" align="center">
@@ -52,7 +53,7 @@
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.row.id)">删除
+              @click="handleDelete(scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -78,8 +79,18 @@
           <el-form-item label="歌单介绍" prop="introduction" size="mini">
             <el-input v-model="registerForm.introduction" placeholder="歌单介绍"></el-input>
           </el-form-item>
-          <el-form-item label="风格" prop="style" size="mini">
+          <!-- <el-form-item label="风格" prop="style" size="mini">
             <el-input v-model="registerForm.style" placeholder="风格"></el-input>
+          </el-form-item> -->
+          <el-form-item label="风格" prop="style" size="mini">
+            <el-select v-model="registerForm.style" placeholder="请选择">
+              <el-option
+                v-for="item in songListStyleAll"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
           </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -97,8 +108,18 @@
         <el-form-item label="简介" size="mini">
           <el-input  type="textarea" v-model="form.introduction"></el-input>
         </el-form-item>
-        <el-form-item label="风格" size="mini">
+        <!-- <el-form-item label="风格" size="mini">
           <el-input v-model="form.style"></el-input>
+        </el-form-item> -->
+        <el-form-item label="风格" prop="style" size="mini">
+          <el-select v-model="form.style" placeholder="请选择">
+            <el-option
+              v-for="item in songListStyleAll"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -115,6 +136,16 @@
         <el-button type="primary" size="mini" @click="deleteRow">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 批量删除提示框 -->
+    <el-dialog title="提示" :visible.sync="batchDelVisible" width="300px" center>
+      <div class="del-dialog-cnt" align="center">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="batchDelVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="delAll">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -148,7 +179,9 @@ export default {
       },
       pageSize: 5, // 页数
       currentPage: 1, // 当前页
-      idx: -1
+      idx: -1,
+      batchDelVisible: false,
+      songListStyleAll: [{id: -1, name: '无'}],
     }
   },
   computed: {
@@ -173,6 +206,8 @@ export default {
   },
   created () {
     this.getData()
+
+    this.getSongListStyleAll()
   },
   methods: {
     uploadUrl (id) {
@@ -188,6 +223,13 @@ export default {
         this.currentPage = 1
       })
     },
+    getSongListStyleAll() {
+      HttpManager.getSongListAll().then((res) => {
+        for (let item of res) {
+          this.songListStyleAll.push(item)
+        }
+      })
+    },
     // 获取当前页
     handleCurrentChange (val) {
       this.currentPage = val
@@ -197,6 +239,9 @@ export default {
     },
     getComment (id) {
       this.$router.push({path: '/Comment', query: {id: id, type: 1}})
+    },
+    getSongListStylePage () {
+      this.$router.push({path: '/SongListStyle'})
     },
     // 编辑啊
     handleEdit (row) {

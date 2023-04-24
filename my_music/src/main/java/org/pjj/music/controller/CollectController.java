@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.pjj.music.domain.Collect;
 import org.pjj.music.service.CollectService;
 import org.pjj.music.utils.Const;
+import org.pjj.music.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author PengJiaJun
@@ -19,6 +18,8 @@ public class CollectController {
 
     @Autowired
     private CollectService collectService;
+
+
 
     @PostMapping("/add")
     public Object add(@RequestParam("userId") Integer userId, @RequestParam("type") Integer type, @RequestParam("songId") Integer songId) {
@@ -44,6 +45,12 @@ public class CollectController {
     @GetMapping("/detail")
     public Object detail(@RequestParam("userId") Integer userId) {
         return collectService.detail(userId);
+    }
+
+    // 管理员 删除 某用户喜欢的某歌曲
+    @GetMapping("/delete")
+    public Object delete(Integer userId, Integer songId){
+        return collectService.deleteMeLove(new Collect(userId, Constant.SONG, songId, null));
     }
 
 

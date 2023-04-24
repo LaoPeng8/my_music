@@ -2,6 +2,8 @@ package org.pjj.music.service.impl;
 
 import org.pjj.music.dao.SongListMapper;
 import org.pjj.music.domain.SongList;
+import org.pjj.music.domain.SongListStyle;
+import org.pjj.music.domain.vo.SongListVo;
 import org.pjj.music.service.SongListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,8 +88,14 @@ public class SongListServiceImpl implements SongListService {
      * @return
      */
     @Override
-    public List<SongList> allSongList() {
-        return songListMapper.allSongList();
+    public List<SongListVo> allSongList() {
+        List<SongListVo> songListVos = songListMapper.allSongList();
+        for (SongListVo item : songListVos) {
+            if(item.getName() == null || item.getName().equals("") || item.getName().equals("null")){
+                item.setName("无");
+            }
+        }
+        return songListVos;
     }
 
     /**
@@ -132,5 +140,25 @@ public class SongListServiceImpl implements SongListService {
     @Override
     public List<SongList> likeStyle(String style) {
         return songListMapper.likeStyle(style);
+    }
+
+    @Override
+    public List<SongListStyle> styleAll() {
+        return songListMapper.styleAll();
+    }
+
+    @Override
+    public int styleInsert(String name) {
+        return songListMapper.styleInsert(name);
+    }
+
+    @Override
+    public int styleDelete(Integer id) {
+        return songListMapper.styleDelete(id);
+    }
+
+    @Override
+    public int styleUpdate(SongListStyle songListStyle) {
+        return songListMapper.styleUpdate(songListStyle);
     }
 }

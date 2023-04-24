@@ -2,6 +2,8 @@ package org.pjj.music.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.pjj.music.domain.SongList;
+import org.pjj.music.domain.SongListStyle;
+import org.pjj.music.domain.vo.SongListVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,7 +48,7 @@ public interface SongListMapper {
      * 查询全部歌单
      * @return
      */
-    List<SongList> allSongList();
+    List<SongListVo> allSongList();
 
     /**
      * 根据标题 精确 查询歌单列表
@@ -76,4 +78,11 @@ public interface SongListMapper {
      */
     List<SongList> likeStyle(@Param("style") String style);
 
+    List<SongListStyle> styleAll();
+
+    int styleInsert(String name);
+
+    int styleDelete(Integer id);
+
+    int styleUpdate(SongListStyle songListStyle);
 }

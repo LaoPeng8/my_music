@@ -35,4 +35,9 @@ public class CollectServiceImpl implements CollectService {
     public List<Collect> detail(Integer userId) {
         return collectMapper.detail(userId);
     }
+
+    @Override
+    public int deleteMeLove(Collect collect) {
+        return collectMapper.delMeLove(collect);
+    }
 }

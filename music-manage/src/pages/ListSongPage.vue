@@ -9,7 +9,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" size="mini" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <el-button type="primary" size="mini" class="handle-del mr10" @click="batchDelVisible = true">批量删除</el-button>
         <el-input v-model="select_word" size="mini" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" size="mini" @click="centerDialogVisible = true">添加歌曲</el-button>
       </div>
@@ -25,7 +25,7 @@
         <el-table-column prop="name" label="歌手-歌曲"></el-table-column>
         <el-table-column label="操作" width="80">
           <template slot-scope="scope">
-            <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+            <el-button size="small" type="danger" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -61,6 +61,16 @@
         <el-button type="primary" size="mini" @click="deleteRow">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 批量删除提示框 -->
+    <el-dialog title="提示" :visible.sync="batchDelVisible" width="300px" center>
+      <div class="del-dialog-cnt" align="center">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="batchDelVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="delAll">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -84,7 +94,8 @@ export default {
       editVisible: false,
       delVisible: false,
       select_word: '',
-      idx: -1
+      idx: -1,
+      batchDelVisible: false
     }
   },
   watch: {
@@ -137,28 +148,39 @@ export default {
       var id = _this.registerForm.singerName + '-' + _this.registerForm.songName
       HttpManager.getSongOfSingerName(id)
         .then(res => {
-          this.addSong(res[0].id)
-        })
-    },
-    // 添加歌曲
-    addSong (id) {
-      let params = new URLSearchParams()
-      params.append('songId', id)
-      params.append('songListId', this.$route.query.id)
-      HttpManager.setListSong(params)
-        .then(res => {
+          // this.addSong(res[0].id)
           if (res.code === 1) {
             this.getData()
             this.notify('添加成功', 'success')
           } else {
-            this.notify('添加失败', 'error')
+            this.notify(res.msg, 'error')
           }
         })
         .catch(err => {
           console.log(err)
         })
-      this.centerDialogVisible = false
+
+      this.centerDialogVisible = false // 隐藏确认框
     },
+    // 添加歌曲
+    // addSong (id) {
+    //   let params = new URLSearchParams()
+    //   params.append('songId', id)
+    //   params.append('songListId', this.$route.query.id)
+    //   HttpManager.setListSong(params)
+    //     .then(res => {
+    //       if (res.code === 1) {
+    //         this.getData()
+    //         this.notify('添加成功', 'success')
+    //       } else {
+    //         this.notify('添加失败', 'error')
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log(err)
+    //     })
+    //   this.centerDialogVisible = false
+    // },
     // 确定删除
     deleteRow () {
       HttpManager.deleteListSong(this.idx)

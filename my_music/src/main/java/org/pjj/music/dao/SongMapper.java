@@ -79,4 +79,6 @@ public interface SongMapper {
      */
     Integer songCount();
 
+    Integer songOfSongName(String name);
+
 }

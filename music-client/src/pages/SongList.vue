@@ -5,7 +5,7 @@
         v-for="(item, index) in songStyle"
         :key="index"
         :class="{active: item.name === activeName}"
-        @click="handleChangeView(item.name)">
+        @click="handleChangeView(item.id, item.name)">
         {{item.name}}
       </li>
     </ul>
@@ -28,7 +28,7 @@
 <script>
 import ContentList from '../components/ContentList'
 import { mapGetters } from 'vuex'
-import { songStyle } from '../assets/data/songList'
+// import { songStyle } from '../assets/data/songList'
 import { HttpManager } from '../api/index'
 
 export default {
@@ -38,7 +38,7 @@ export default {
   },
   data () {
     return {
-      songStyle: songStyle, // 歌单导航栏类别
+      songStyle: [{id: -2, name: "全部歌单"}], // 歌单导航栏类别
       activeName: '全部歌单',
       pageSize: 15, // 页数
       currentPage: 1, // 当前页
@@ -55,7 +55,9 @@ export default {
     }
   },
   mounted () {
-    this.handleChangeView('全部歌单')
+    this.handleChangeView(-2, '全部歌单')
+
+    this.getSongListStyleAll() //全部歌单分类
   },
   methods: {
     // 获取当前页
@@ -63,13 +65,13 @@ export default {
       this.currentPage = val
     },
     // 获取歌单
-    handleChangeView: function (name) {
+    handleChangeView: function (id, name) {
       this.activeName = name
       this.albumDatas = []
       if (name === '全部歌单') {
         this.getSongList(this.cur_page)
       } else {
-        this.getSongListOfStyle(name)
+        this.getSongListOfStyle(id)
       }
     },
     // 获取全部歌单
@@ -82,6 +84,21 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    // 获取全部歌单分类
+    getSongListStyleAll() {
+      HttpManager.getSongListStyleAll()
+        .then(res => {
+          // console.log(this.songStyle)
+          for (let item of res) {
+            this.songStyle.push(item)
+          }
+          // console.log(this.songStyle)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
     },
     // 通过类别获取歌单
     getSongListOfStyle (style) {

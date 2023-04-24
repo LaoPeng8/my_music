@@ -1,7 +1,8 @@
 package org.pjj.music.service;
 
-import org.apache.ibatis.annotations.Param;
 import org.pjj.music.domain.SongList;
+import org.pjj.music.domain.SongListStyle;
+import org.pjj.music.domain.vo.SongListVo;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public interface SongListService {
      * 查询全部歌单
      * @return
      */
-    List<SongList> allSongList();
+    List<SongListVo> allSongList();
 
     /**
      * 根据标题 精确 查询歌单列表
@@ -73,5 +74,13 @@ public interface SongListService {
      * @return
      */
     List<SongList> likeStyle(String style);
+
+    List<SongListStyle> styleAll();
+
+    int styleInsert(String name);
+
+    int styleDelete(Integer id);
+
+    int styleUpdate(SongListStyle songListStyle);
 
 }

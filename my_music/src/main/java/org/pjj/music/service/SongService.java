@@ -84,4 +84,6 @@ public interface SongService {
      */
     Integer songCount();
 
+    Integer songOfSongName(String name);
+
 }

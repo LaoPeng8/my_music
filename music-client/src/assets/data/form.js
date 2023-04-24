@@ -4,13 +4,23 @@ const rules = {
     { required: true, trigger: 'blur' }
   ],
   password: [
-    { required: true, trigger: 'blur' }
+    {
+      required: true,
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      message: '至少8个字符，至少1个大写字母，1个小写字母和1个数字',
+      trigger: 'blur',
+    }
   ],
   sex: [
     { required: true, message: '请选择性别', trigger: 'change' }
   ],
   phoneNum: [
-    { essage: '请选择日期', trigger: 'blur' }
+    { essage: '请选择日期', trigger: 'blur' },
+    {
+      pattern: /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/,
+      message: '请输入正确的手机号码',
+      trigger: 'blur',
+    }
   ],
   email: [
     { message: '请输入邮箱地址', trigger: 'blur' },

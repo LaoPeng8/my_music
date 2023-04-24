@@ -2,7 +2,7 @@
   <div class="table">
     <div class="container">
       <div class="handle-box">
-        <el-button class="handle-del mr10" type="primary" size="mini" @click="delAll">批量删除</el-button>
+        <el-button class="handle-del mr10" type="primary" size="mini" @click="batchDelVisible = true">批量删除</el-button>
         <el-input v-model="select_word" class="handle-input mr10" size="mini" placeholder="筛选关键词"></el-input>
         <el-button type="primary" size="mini" @click="centerDialogVisible = true">添加歌手</el-button>
       </div>
@@ -49,7 +49,7 @@
         <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -143,6 +143,16 @@
         <el-button type="primary" size="mini" @click="deleteRow">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 批量删除提示框 -->
+    <el-dialog title="提示" :visible.sync="batchDelVisible" width="300px" center>
+      <div class="del-dialog-cnt" align="center">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="batchDelVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="delAll">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -182,7 +192,8 @@ export default {
       },
       pageSize: 5, // 页数
       currentPage: 1, // 当前页
-      idx: -1
+      idx: -1,
+      batchDelVisible: false
     }
   },
   computed: {

@@ -130,4 +130,10 @@ public class SongServiceImpl implements SongService {
     public Integer songCount() {
         return songMapper.songCount();
     }
+
+
+    @Override
+    public Integer songOfSongName(String name) {
+        return songMapper.songOfSongName(name);
+    }
 }

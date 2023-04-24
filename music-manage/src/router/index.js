@@ -30,6 +30,11 @@ const constantRoutes = [
         meta: { title: 'SongList' }
       },
       {
+        path: '/SongListStyle',
+        component: resolve => require(['../pages/SongListStylePage.vue'], resolve),
+        meta: { title: 'SongListStyle' }
+      },
+      {
         path: '/ListSong',
         component: resolve => require(['../pages/ListSongPage.vue'], resolve),
         meta: { title: 'ListSong' }

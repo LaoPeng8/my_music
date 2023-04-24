@@ -11,4 +11,6 @@ public interface CollectService {
 
     List<Collect> detail(Integer userId);
 
+    int deleteMeLove(Collect collect);
+
 }

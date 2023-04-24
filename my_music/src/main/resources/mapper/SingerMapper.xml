@@ -36,7 +36,7 @@
             <if test="name != null and name != ''">
                 name,
             </if>
-            <if test="sex != null and sex != ''">
+            <if test="sex != null ">
                 sex,
             </if>
             <if test="pic != null and pic != ''">
@@ -61,7 +61,7 @@
             <if test="name != null and name != ''">
                 #{name},
             </if>
-            <if test="sex != null and sex != ''">
+            <if test="sex != null ">
                 #{sex},
             </if>
             <if test="pic != null and pic != ''">
@@ -85,7 +85,7 @@
             <if test="name != null and name != ''">
                 name = #{name},
             </if>
-            <if test="sex != null and sex != ''">
+            <if test="sex != null ">
                 sex = #{sex},
             </if>
             <if test="pic != null and pic != ''">

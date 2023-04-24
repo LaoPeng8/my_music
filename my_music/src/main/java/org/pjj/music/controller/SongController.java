@@ -5,6 +5,7 @@ import org.pjj.music.domain.Singer;
 import org.pjj.music.domain.Song;
 import org.pjj.music.service.SongService;
 import org.pjj.music.utils.Const;
+import org.pjj.music.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +37,7 @@ public class SongController {
     @PostMapping(value = "/add")
     public Object addSong(Song song, @RequestParam("file") MultipartFile musicFile){
         JSONObject jsonObject = new JSONObject();
+        song.setPic(Constant.DEFSONGPIC);//默认歌曲图片
 
         if(musicFile.isEmpty()){
             jsonObject.put(Const.CODE,0);
@@ -170,7 +172,7 @@ public class SongController {
             //上传成功之后, 将旧的歌曲图片删除
             //先查询 再修改 (其实这部分内容应该写在 service层中 songService.update(song) 直接写在该方法中)
             Song oldSongPic = songService.selectByPrimaryKeyMe(song.getId());
-            if(!"/img/songPic/tubiao.jpg".equals(oldSongPic.getPic())){ //不删除默认头像
+            if(!Constant.DEFSONGPIC.equals(oldSongPic.getPic())){ //不删除默认头像
                 File oldSongPicFile = new File(System.getProperty("user.dir") + oldSongPic.getPic());
                 oldSongPicFile.delete();//不管旧的歌曲图片删除成功还是失败都可以新上传歌曲图片 (歌曲图片一般不会删除失败, 就没必要再套一层 if )
             }

@@ -2,7 +2,7 @@
   <div class="table">
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" size="mini" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <el-button type="primary" size="mini" class="handle-del mr10" @click="batchDelVisible = true">批量删除</el-button>
         <el-input v-model="select_word" size="mini" placeholder="筛选相关用户" class="handle-input mr10"></el-input>
         <el-button type="primary" size="mini" @click="centerDialogVisible = true">添加新用户</el-button>
       </div>
@@ -45,7 +45,7 @@
         <el-table-column label="操作" width="150" align="center">
             <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+                <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
             </template>
         </el-table-column>
       </el-table>
@@ -70,7 +70,7 @@
         <el-form-item label="密码" prop="password" size="mini">
           <el-input type="password" placeholder="密码" v-model="registerForm.password"></el-input>
         </el-form-item>
-        <el-form-item label="性别" size="mini">
+        <el-form-item label="性别" prop="sex" size="mini">
           <el-radio-group v-model="registerForm.sex">
             <el-radio :label="0">女</el-radio>
             <el-radio :label="1">男</el-radio>
@@ -143,6 +143,15 @@
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" @click="delVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="deleteRow">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 批量删除提示框 -->
+    <el-dialog title="提示" :visible.sync="batchDelVisible" width="300px" center>
+      <div class="del-dialog-cnt" align="center">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="batchDelVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="delAll">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -320,7 +329,8 @@ export default {
       },
       pageSize: 5, // 页数
       currentPage: 1, // 当前页
-      idx: -1 // 记录当前点中的行
+      idx: -1, // 记录当前点中的行
+      batchDelVisible: false
     }
   },
   computed: {
@@ -375,12 +385,12 @@ export default {
       params.append('username', this.registerForm.username)
       params.append('password', this.registerForm.password)
       params.append('sex', this.registerForm.sex)
-      params.append('phone_num', this.registerForm.phoneNum)
+      params.append('phoneNum', this.registerForm.phoneNum)
       params.append('email', this.registerForm.email)
       params.append('birth', datetime)
       params.append('introduction', this.registerForm.introduction)
       params.append('location', this.registerForm.location)
-      params.append('avator', '/img/user.jpg')
+      params.append('avator', '/img/avatorImages/user.jpg')
       HttpManager.setUser(params)
         .then(res => {
           if (res.code === 1) {
@@ -422,7 +432,7 @@ export default {
       params.append('username', this.form.username)
       params.append('password', this.form.password)
       params.append('sex', this.form.sex)
-      params.append('phone_num', this.form.phoneNum)
+      params.append('phoneNum', this.form.phoneNum)
       params.append('email', this.form.email)
       params.append('birth', datetime)
       params.append('introduction', this.form.introduction)

@@ -56,6 +56,14 @@ const HttpManager = {
   updateSongMsg: (params) => post(`song/update`, params),
   // 删除歌曲
   deleteSong: (id) => get(`song/delete?id=${id}`),
+  // 返回全部歌单分类
+  getSongListAll: () => get(`songList/styleAll`),
+  // 修改歌单分类
+  updateSongListStyle: (params) => post(`songList/style/update`, params),
+  // 新增歌单分类
+  insertSongListStyle: (params) => post(`songList/style/add`, params),
+  // 删除歌单分类
+  deleteSongListStyle: (params) => post(`songList/style/del`, params),
 
   // =======================> 歌单 API
   // 添加歌单

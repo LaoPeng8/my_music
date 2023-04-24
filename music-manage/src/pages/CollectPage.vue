@@ -10,7 +10,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" size="mini" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <el-button type="primary" size="mini" class="handle-del mr10" @click="batchDelVisible = true">批量删除</el-button>
         <el-input v-model="select_word" size="mini" placeholder="筛选关键词" class="handle-input mr10"></el-input>
       </div>
       <el-table
@@ -39,6 +39,16 @@
         <el-button type="primary" size="mini" @click="deleteRow">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 批量删除提示框 -->
+    <el-dialog title="提示" :visible.sync="batchDelVisible" width="300px" center>
+      <div class="del-dialog-cnt" align="center">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="batchDelVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="delAll">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -58,7 +68,8 @@ export default {
       multipleSelection: [], // 记录要删除的歌曲
       delVisible: false, // 显示删除框
       select_word: '', // 记录输入框输入的内容
-      idx: -1 // 记录当前要删除的歌曲
+      idx: -1, // 记录当前要删除的歌曲
+      batchDelVisible: false // 批量删除对话框
     }
   },
   watch: {
@@ -105,7 +116,7 @@ export default {
     },
     // 删除一首歌曲
     deleteRow () {
-      HttpManager.deleteCollection(this.$route.query.id, this.idx.id)
+      HttpManager.deleteCollection(this.$route.query.id, this.idx)
         .then(res => {
           if (res) {
             this.getData()

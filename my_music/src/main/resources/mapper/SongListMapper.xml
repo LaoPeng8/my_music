@@ -90,10 +90,10 @@
         where id = #{id}
     </select>
 
-    <select id="allSongList" resultMap="ResultMapWithBloBs">
-        select
-        <include refid="Blob_Column_List" />
-        from song_list
+    <select id="allSongList" resultType="org.pjj.music.domain.vo.SongListVo">
+        select t1.*, t2.name
+        from song_list t1
+        left join song_list_style t2 on t1.style = t2.id
     </select>
 
     <select id="songListOfTitle" parameterType="java.lang.String" resultMap="ResultMapWithBloBs">
@@ -123,5 +123,21 @@
         from song_list
         where style like #{sytle}
     </select>
+
+    <select id="styleAll" resultType="org.pjj.music.domain.SongListStyle">
+        select * from song_list_style
+    </select>
+
+    <insert id="styleInsert" parameterType="java.lang.String">
+        insert into song_list_style(name) values(#{name})
+    </insert>
+
+    <delete id="styleDelete" parameterType="java.lang.Integer">
+        delete from song_list_style where id = #{id}
+    </delete>
+
+    <update id="styleUpdate" parameterType="org.pjj.music.domain.SongListStyle">
+        update song_list_style set name = #{name} where id = #{id};
+    </update>
 
 </mapper>

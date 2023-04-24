@@ -37,19 +37,19 @@ public class ListSongController {
         String name = request.getParameter("name");//歌手-歌名
 
         //根据 - 拆分出 歌手 与 歌名
-        int split = name.indexOf('-');
-        String singerName = name.substring(0,split);//歌手名
-        String songName = name.substring(split + 1);//歌名
+//        int split = name.indexOf('-');
+//        String singerName = name.substring(0,split);//歌手名
+//        String songName = name.substring(split + 1);//歌名
 
         int songId;
         int songListId;
         try {
-            songId = songService.songOfSingerNameAndSongName(singerName, songName);//歌曲Id
+            songId = songService.songOfSongName(name);//歌曲Id
             songListId = (int) session.getAttribute("currentSongListId");//歌单Id
         } catch (NullPointerException e){
             e.printStackTrace();
             jsonObject.put(Const.CODE,0);
-            jsonObject.put(Const.MSG,"添加失败");
+            jsonObject.put(Const.MSG,"添加失败-歌手名称 或 歌曲名称 不存在");
             return jsonObject;
         }
 

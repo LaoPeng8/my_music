@@ -151,5 +151,8 @@
         select count(*) from song;
     </select>
 
+    <select id="songOfSongName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select id from song where name = #{name}
+    </select>
 
 </mapper>

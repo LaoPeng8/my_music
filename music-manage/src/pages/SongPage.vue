@@ -9,7 +9,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" size="mini" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <el-button type="primary" size="mini" class="handle-del mr10" @click="batchDelVisible = true">批量删除</el-button>
         <el-input v-model="select_word" size="mini" placeholder="筛选关键词" class="handle-input mr10"></el-input>
         <el-button type="primary" size="mini" @click="centerDialogVisible = true">添加歌曲</el-button>
       </div>
@@ -76,7 +76,7 @@
         <el-table-column label="操作" width="150" align="center">
             <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+                <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
             </template>
         </el-table-column>
       </el-table>
@@ -97,15 +97,15 @@
       <el-form action="" :model="registerForm" id="tf">
         <div>
           <label>歌曲名</label>
-          <el-input type="text" name="name"></el-input>
+          <el-input type="text" name="name" v-model="registerForm.name"></el-input>
         </div>
         <div>
           <label>专辑</label>
-          <el-input type="text" name="introduction"></el-input>
+          <el-input type="text" name="introduction" v-model="registerForm.introduction"></el-input>
         </div>
         <div>
           <label>歌词</label>
-          <el-input type="textarea" name="lyric"></el-input>
+          <el-input type="textarea" name="lyric" v-model="registerForm.lyric"></el-input>
         </div>
         <div>
           <label>歌曲上传</label>
@@ -146,6 +146,16 @@
         <el-button type="primary" size="mini" @click="deleteRow">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 批量删除提示框 -->
+    <el-dialog title="提示" :visible.sync="batchDelVisible" width="300px" center>
+      <div class="del-dialog-cnt" align="center">删除不可恢复，是否确定删除？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="batchDelVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="delAll">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -196,7 +206,8 @@ export default {
       currentPage: 1, // 当前页
       idx: -1,
       BOFANG: ICON.BOFANG,
-      ZANTING: ICON.ZANTING
+      ZANTING: ICON.ZANTING,
+      batchDelVisible: false // 批量删除对话框
     }
   },
   computed: {

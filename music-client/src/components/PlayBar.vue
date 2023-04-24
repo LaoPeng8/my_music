@@ -354,7 +354,7 @@ export default {
     goPlayerPage () {
       this.$router.push({path: `/lyric/${this.id}`})
     },
-    collection () {
+    collection () {// 收藏(我喜欢)
       if (this.loginIn) {
         var params = new URLSearchParams()
         params.append('userId', this.userId)
@@ -366,6 +366,12 @@ export default {
               this.$store.commit('setIsActive', true)
               this.notify('收藏成功', 'success')
             } else if (res.code === 2) {
+              // console.log('222222')
+              // console.log(this.$route.path)
+              if(this.$route.path == '/my-music') {
+                this.$router.go(0) //如果取消收藏时 当前页面为 '我的音乐' 则刷新页面 将被取消的歌曲从 我喜欢列表中剔除
+              }
+
               this.notify('取消收藏', 'warning')
               this.$store.commit('setIsActive', false)
             } else {

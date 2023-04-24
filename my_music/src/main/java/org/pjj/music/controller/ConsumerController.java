@@ -7,6 +7,7 @@ import org.pjj.music.domain.Consumer;
 import org.pjj.music.domain.Singer;
 import org.pjj.music.service.ConsumerService;
 import org.pjj.music.utils.Const;
+import org.pjj.music.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -132,7 +133,7 @@ public class ConsumerController {
 
         //查询文件路径, 删除文件(用户头像)后, 再删除数据库中的记录
         Consumer consumer = consumerService.selectByPrimaryKey(id);
-        if(!"/img/user.jpg".equals(consumer.getAvator())){//不删除默认头像
+        if(!Constant.DEFUSERPIC.equals(consumer.getAvator())){//不删除默认头像
             File file = new File(System.getProperty("user.dir") + System.getProperty("file.separator") + consumer.getAvator());
             file.delete();
         }

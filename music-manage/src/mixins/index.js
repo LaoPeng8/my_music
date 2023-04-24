@@ -11,9 +11,9 @@ export const mixin = {
       return `${this.$store.state.HOST}/${url}`
     },
     // 获取要删除列表的id
-    handleDelete (id) {
-      this.idx = id
-      this.delVisible = true
+    handleDelete (row) {
+      this.idx = row.id
+      this.delVisible = true // 亮出确认删除对话框
     },
     // 获取批量要删除的列表
     handleSelectionChange (val) {
@@ -22,10 +22,12 @@ export const mixin = {
     // 批量删除
     delAll () {
       for (let item of this.multipleSelection) {
-        this.handleDelete(item.id)
-        this.deleteRow(item.id)
+        // console.log(item)
+        this.idx = item.id
+        this.deleteRow()
       }
       this.multipleSelection = []
+      this.batchDelVisible = false
     },
     // 得到歌曲名字
     replaceFName (str) {

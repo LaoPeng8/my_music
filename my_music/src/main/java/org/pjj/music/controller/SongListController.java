@@ -3,6 +3,7 @@ package org.pjj.music.controller;
 import com.alibaba.fastjson.JSONObject;
 import org.pjj.music.domain.Singer;
 import org.pjj.music.domain.SongList;
+import org.pjj.music.domain.SongListStyle;
 import org.pjj.music.service.SongListService;
 import org.pjj.music.utils.Const;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,5 +184,56 @@ public class SongListController {
         }
     }
 
+
+
+    @GetMapping("/styleAll")
+    public Object styleAll() {
+        return songListService.styleAll();
+    }
+
+    @PostMapping("/style/add")
+    public Object styleInsert(@RequestParam("name") String name) {
+        JSONObject jsonObject = new JSONObject();
+        int flag = songListService.styleInsert(name);
+        if(flag > 0) {
+            jsonObject.put(Const.CODE,1);
+            jsonObject.put(Const.MSG,"新增成功");
+        }else {
+            jsonObject.put(Const.CODE,0);
+            jsonObject.put(Const.MSG,"新增失败");
+        }
+
+        return jsonObject;
+    }
+
+    @PostMapping("/style/del")
+    public Object styleDelete(@RequestParam("id") Integer id) {
+        JSONObject jsonObject = new JSONObject();
+        int flag = songListService.styleDelete(id);
+        if(flag > 0) {
+            jsonObject.put(Const.CODE,1);
+            jsonObject.put(Const.MSG,"删除成功");
+        }else {
+            jsonObject.put(Const.CODE,0);
+            jsonObject.put(Const.MSG,"删除失败");
+        }
+
+        return jsonObject;
+    }
+
+    @PostMapping("/style/update")
+    public Object styleUpdate(SongListStyle songListStyle) {
+        JSONObject jsonObject = new JSONObject();
+        int flag = songListService.styleUpdate(songListStyle);
+        if(flag > 0) {
+            jsonObject.put(Const.CODE,1);
+            jsonObject.put(Const.MSG,"修改成功");
+        }else {
+            jsonObject.put(Const.CODE,0);
+            jsonObject.put(Const.MSG,"修改失败");
+        }
+
+        return jsonObject;
+    }
 
 }

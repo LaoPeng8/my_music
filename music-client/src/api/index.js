@@ -16,6 +16,8 @@ const HttpManager = {
   getSongList: () => get('songList'),
   // 获取歌单类型
   getSongListOfStyle: (style) => get(`songList/style/detail?style=${style}`),
+  // 获取全部歌单
+  getSongListStyleAll: () => get(`songList/styleAll`),
   // 返回标题包含文字的歌单
   getSongListOfLikeTitle: (keywords) => get(`songList/likeTitle/detail?title=${keywords}`),
   // 返回歌单里指定歌单ID的歌曲

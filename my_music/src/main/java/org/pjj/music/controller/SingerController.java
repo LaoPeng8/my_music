@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.pjj.music.domain.Singer;
 import org.pjj.music.service.SingerService;
 import org.pjj.music.utils.Const;
+import org.pjj.music.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,7 +79,7 @@ public class SingerController {
 
         //先查询 后删除
         Singer singer = singerService.selectByPrimaryKey(id);
-        if(!singer.getPic().equals("/img/singerPic/hhh.jpg")){ // 不是默认头像才会删除 (默认头像不删除)
+        if(!singer.getPic().equals(Constant.DEFSINGERPIC)){ // 不是默认头像才会删除 (默认头像不删除)
             File singerAvatarFile = new File(System.getProperty("user.dir") + singer.getPic());
             singerAvatarFile.delete();//删除头像, 不管删除成功与否. 真正决定删除成功与否的是 下面的数据库中的删除
         }
