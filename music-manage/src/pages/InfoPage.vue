@@ -146,15 +146,15 @@ export default {
         }
       },
       songStyle: {
-        columns: ['分格', '总数'],
+        columns: ['风格', '总数'],
         rows: [
-          { '分格': '华语', '总数': 0 },
-          { '分格': '粤语', '总数': 0 },
-          { '分格': '欧美', '总数': 0 },
-          { '分格': '日韩', '总数': 0 },
-          { '分格': 'BGM', '总数': 0 },
-          { '分格': '轻音乐', '总数': 0 },
-          { '分格': '乐器', '总数': 0 }
+          { '风格': '华语', '总数': 0 },
+          { '风格': '粤语', '总数': 0 },
+          { '风格': '欧美', '总数': 0 },
+          { '风格': '日韩', '总数': 0 },
+          { '风格': 'BGM', '总数': 0 },
+          { '风格': '轻音乐', '总数': 0 },
+          { '风格': '乐器', '总数': 0 }
         ]
       },
       userCount: 0,
@@ -168,6 +168,7 @@ export default {
     this.getSinger()
     this.getSong()
     this.getSongList()
+    this.getSongList2()
   },
   methods: {
     getUser () {
@@ -196,7 +197,7 @@ export default {
     },
     getStyle (val) {
       for (let item of this.songStyle.rows) {
-        if (val.includes(item['分格'])) {
+        if (val.includes(item['风格'])) {
           item['总数']++
         }
       }
@@ -223,9 +224,16 @@ export default {
     getSongList () {
       HttpManager.getSongList().then(res => {
         this.songListCount = res.length
-        for (let item of res) {
-          this.getStyle(item.style)
-        }
+        // for (let item of res) {
+        //   this.getStyle(item.name)
+        // }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getSongList2 () {
+      HttpManager.indexSongListStyle().then(res => {
+        this.songStyle.rows = res
       }).catch(err => {
         console.log(err)
       })

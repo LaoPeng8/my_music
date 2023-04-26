@@ -34,6 +34,11 @@ public class SongListController {
         return songListService.allSongList();
     }
 
+    @GetMapping("/index/songListStyle")
+    public Object indexSongListStyle(){
+        return songListService.indexSongListStyle();
+    }
+
     /**
      * 增加
      */

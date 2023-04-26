@@ -140,4 +140,12 @@
         update song_list_style set name = #{name} where id = #{id};
     </update>
 
+    <select id="indexSongListStyle" resultType="HashMap">
+        select t2.name as '风格', count(t2.name) as '总数' from song_list t1 left join song_list_style t2 on t1.style = t2.id
+        group by t2.name
+        having t2.name is not null
+        union all
+        select '无' as '风格', count(style) as '总数' from song_list where style = '-1';
+    </select>
+
 </mapper>

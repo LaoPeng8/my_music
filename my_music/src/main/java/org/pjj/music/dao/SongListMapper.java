@@ -6,6 +6,7 @@ import org.pjj.music.domain.SongListStyle;
 import org.pjj.music.domain.vo.SongListVo;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -85,4 +86,6 @@ public interface SongListMapper {
     int styleDelete(Integer id);
 
     int styleUpdate(SongListStyle songListStyle);
+
+    List<HashMap> indexSongListStyle();
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -160,5 +161,10 @@ public class SongListServiceImpl implements SongListService {
     @Override
     public int styleUpdate(SongListStyle songListStyle) {
         return songListMapper.styleUpdate(songListStyle);
+    }
+
+    @Override
+    public List<HashMap> indexSongListStyle() {
+        return songListMapper.indexSongListStyle();
     }
 }

@@ -22,3 +22,11 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#配置日志
+logging:
+  level:
+    root: info #全部日志级别为 info
+    org.pjj.music: debug #该包下的日志级别为 debug
+  file:
+    name: log/music-log.log #将日志储存到 项目/log/music-log.log中

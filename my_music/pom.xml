@@ -49,6 +49,11 @@
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
 		<!-- commons-lang3 是Apache提供的一个java.lang包的增强版本
 		Lang3为java.lang API提供了许多帮助程序实用程序，特别是字符串操作方法，
 		基本数值方法，对象反射，并发，创建和序列化以及系统属性 -->

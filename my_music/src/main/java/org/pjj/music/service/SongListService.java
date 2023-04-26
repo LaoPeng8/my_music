@@ -4,6 +4,7 @@ import org.pjj.music.domain.SongList;
 import org.pjj.music.domain.SongListStyle;
 import org.pjj.music.domain.vo.SongListVo;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -82,5 +83,7 @@ public interface SongListService {
     int styleDelete(Integer id);
 
     int styleUpdate(SongListStyle songListStyle);
+
+    List<HashMap> indexSongListStyle();
 
 }
